@@ -6,6 +6,7 @@
 
 using namespace std;
 
+// prints the vector given as input in one line.
 void print_vector(vector<int> v){
     for (int i = 0; i < v.size(); i++){
         cout << v.at(i) << " ";
@@ -13,6 +14,9 @@ void print_vector(vector<int> v){
     cout << endl;
 }
 
+// The bubble sort function
+// sorts the vector using the bubble sort algorithm
+// time complexity: O(n^2)
 void bubblesort(vector<int> &v){
 
     cout << "***************************************" << endl;
@@ -39,6 +43,9 @@ void bubblesort(vector<int> &v){
     cout << "***************************************" << endl;
 }
 
+// the insertion sort function
+// sorts the vector using the insertion sort algorithm
+// time complexity: O(n^2)
 void insertionsort(vector<int> &v){
     cout << "***************************************" << endl;
     cout << "Unsorted: ";
@@ -68,6 +75,9 @@ void insertionsort(vector<int> &v){
     cout << "***************************************" << endl;
 }
 
+// the selection sort function
+// sorts the vector using the selection sort algorithm
+// time complexity: O(n^2)
 void selectionsort(vector<int> &v){
     cout << "***************************************" << endl;
     cout << "Unsorted: ";
@@ -100,6 +110,61 @@ void selectionsort(vector<int> &v){
 
 }
 
+// helper function for the merge sort function
+// compares and merges unsorted subarrays into one sorted array
+void merge(vector<int>& v, int s, int m, int e) {
+	
+    // temp is used to temporary store the vector obtained by merging
+    // elements from [s to m] and [m+1 to e] in v
+	vector<int> temp;
+
+	int i, j;
+	i = s;
+	j = m + 1;
+
+	while (i <= m && j <= e) {
+
+		if (v[i] <= v[j]) {
+			temp.push_back(v[i]);
+			++i;
+		}
+		else {
+			temp.push_back(v[j]);
+			++j;
+		}
+
+	}
+
+	while (i <= m) {
+		temp.push_back(v[i]);
+		++i;
+	}
+
+	while (j <= e) {
+		temp.push_back(v[j]);
+		++j;
+	}
+
+	for (int i = s; i <= e; ++i)
+		v[i] = temp[i - s];
+
+}
+
+// the merge sort function
+// sorts the vector in the range [s to e] in v using
+// merge sort algorithm
+// time complexity: O(n * log(n))
+void mergesort(vector<int>& v, int s, int e) {
+	if (s < e) {
+		int m = (s + e) / 2;
+		mergesort(v, s, m);
+		mergesort(v, m + 1, e);
+		merge(v, s, m, e);
+	}
+
+    print_vector(v);
+}
+
 int main(){
 
     ifstream fin("nums.txt");
@@ -122,6 +187,7 @@ int main(){
         cout << "1. Bubble Sort" << endl;
         cout << "2. Insertion Sort" << endl;
         cout << "3. Selection Sort" << endl;
+        cout << "4. Merge Sort" << endl;
         cin >> choice;
 
         switch (choice) {
@@ -136,6 +202,16 @@ int main(){
                 break;
             case 3:
                 selectionsort(numbers);
+                break;
+            case 4:
+                int s = numbers.size() - 1;
+                cout << "***************************************" << endl;
+                cout << "Unsorted: ";
+                print_vector(numbers);
+                mergesort(numbers, 0, s);
+                cout << "Sorted: ";
+                print_vector(numbers);
+                cout << "***************************************" << endl;
                 break;
         }
     }
